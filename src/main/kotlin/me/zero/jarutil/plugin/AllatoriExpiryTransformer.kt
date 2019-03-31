@@ -9,9 +9,7 @@ import java.util.*
 
 class AllatoriExpiryTransformer : Transformer {
 
-    companion object {
-        var removedMatches = 0
-    }
+    var removedMatches = 0
 
     override fun apply(cn: ClassNode) {
         cn.methods.forEach { mn ->
@@ -68,6 +66,6 @@ class AllatoriExpiryTransformer : Transformer {
     }
 
     override fun printInfo() {
-        println(" AllatoriExpiryTransformer removed $removedMatches expiry checks")
+        println(" AllatoriExpiryTransformer removed ${this.removedMatches} expiry checks")
     }
 }
