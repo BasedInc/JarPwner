@@ -11,7 +11,6 @@ fun InsnList.findPattern(vararg opcodes: Int?) : List<Pair<AbstractInsnNode, Abs
 
     outer@
     for (i in 0..insns.size - opcodes.size) {
-        var found = true
         var last : AbstractInsnNode = this[i]
 
         for (j in 0 until opcodes.size) {
@@ -24,15 +23,12 @@ fun InsnList.findPattern(vararg opcodes: Int?) : List<Pair<AbstractInsnNode, Abs
             val insn = this[index]
 
             if (insn.opcode != opcodes[j] && opcodes[j] != null) {
-                found = false
+                continue@outer
             }
 
             last = insn
         }
-
-        if (found) {
-            matches.add(Pair(this[i], last))
-        }
+        matches.add(Pair(this[i], last))
     }
     return matches
 }
