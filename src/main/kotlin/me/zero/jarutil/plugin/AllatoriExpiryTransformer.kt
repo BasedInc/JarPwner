@@ -1,8 +1,8 @@
 package me.zero.jarutil.plugin
 
 import me.zero.jarutil.transform.Transformer
-import me.zero.jarutil.utils.completeDesc
-import me.zero.jarutil.utils.findPattern
+import me.zero.jarutil.extension.completeDesc
+import me.zero.jarutil.extension.findPattern
 import org.objectweb.asm.Opcodes.*
 import org.objectweb.asm.tree.*
 import java.util.*

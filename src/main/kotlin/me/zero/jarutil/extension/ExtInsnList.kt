@@ -1,7 +1,6 @@
-package me.zero.jarutil.utils
+package me.zero.jarutil.extension
 
 import org.objectweb.asm.tree.AbstractInsnNode
-import org.objectweb.asm.tree.AbstractInsnNode.*
 import org.objectweb.asm.tree.InsnList
 
 fun InsnList.findPattern(vararg opcodes: Int?) : List<Pair<AbstractInsnNode, AbstractInsnNode>> {
