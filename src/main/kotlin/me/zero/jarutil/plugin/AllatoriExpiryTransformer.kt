@@ -9,7 +9,7 @@ import java.util.*
 
 class AllatoriExpiryTransformer : Transformer {
 
-    var removedMatches = 0
+    private var removedMatches = 0
 
     override fun apply(cn: ClassNode) {
         cn.methods.forEach { mn ->
