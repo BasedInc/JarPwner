@@ -1,9 +1,16 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.3.21'
+    id 'java'
 }
 
 ext {
-    asm_version = '7.1'
+    asm_version          = '7.1'
+    commons_io_version   = '2.6'
+    commons_lang_version = '3.8.1'
+}
+
+sourceCompatibility = targetCompatibility = '12'
+compileJava {
+    sourceCompatibility = targetCompatibility = '12'
 }
 
 group 'me.zero'
@@ -14,15 +21,8 @@ repositories {
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     compile "org.ow2.asm:asm:${asm_version}"
     compile "org.ow2.asm:asm-util:${asm_version}"
-    compile "commons-io:commons-io:2.6"
-}
-
-compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
-compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    compile "commons-io:commons-io:${commons_io_version}"
+    compile "org.apache.commons:commons-lang3:${commons_lang_version}"
 }
