@@ -11,7 +11,7 @@ import static org.objectweb.asm.tree.AbstractInsnNode.*;
  * @author Brady
  * @since 3/31/2019
  */
-public class Pattern {
+public final class Pattern {
 
     private final Integer[] opcodes;
 
@@ -19,7 +19,7 @@ public class Pattern {
         this.opcodes = opcodes;
     }
 
-    public List<InsnRange> find(InsnList list, int flags) {
+    public final List<InsnRange> find(InsnList list, int flags) {
         List<InsnRange> matches = new ArrayList<>();
 
         outer:

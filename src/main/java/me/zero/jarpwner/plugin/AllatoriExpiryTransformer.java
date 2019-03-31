@@ -62,7 +62,7 @@ public class AllatoriExpiryTransformer implements Transformer {
 
     @Override
     public final void apply(ClassNode cn) {
-        cn.methods.forEach(mn -> PATTERNS.forEach(pattern ->  pattern.find(mn.instructions, Pattern.SearchFlags.IGNORE_ALL).forEach(range -> {
+        cn.methods.forEach(mn -> PATTERNS.forEach(pattern -> pattern.find(mn.instructions, Pattern.SearchFlags.IGNORE_ALL).forEach(range -> {
             var insns = range.getAll(true);
             if (insns == null) {
                 return;
