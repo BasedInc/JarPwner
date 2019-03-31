@@ -49,13 +49,15 @@ class AllatoriExpiryTransformer : Transformer {
             INVOKESPECIAL,
             ATHROW
         )
+
+        val PATTERNS = arrayOf(PATTERN, PATTERN_NO_OBF)
     }
 
     private var removedMatches = 0
 
     override fun apply(cn: ClassNode) {
         cn.methods.forEach { mn ->
-            arrayOf(PATTERN, PATTERN_NO_OBF).forEach { pattern ->
+            PATTERNS.forEach { pattern ->
                 mn.instructions.findPattern(*pattern).forEach { range ->
                     val from  = range.first
                     val to    = range.second
