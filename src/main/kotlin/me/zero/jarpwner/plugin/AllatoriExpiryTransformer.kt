@@ -3,7 +3,7 @@ package me.zero.jarpwner.plugin
 import me.zero.jarpwner.transform.Transformer
 import me.zero.jarpwner.extension.completeDesc
 import me.zero.jarpwner.extension.findPattern
-import me.zero.jarpwner.extension.to
+import me.zero.jarpwner.extension.range
 import org.objectweb.asm.Opcodes.*
 import org.objectweb.asm.tree.*
 import java.util.*
@@ -59,7 +59,7 @@ class AllatoriExpiryTransformer : Transformer {
                 mn.instructions.findPattern(*pattern).forEach { range ->
                     val from  = range.first
                     val to    = range.second
-                    val nodes = from.to(to, inclusive = true)
+                    val nodes = from.range(to, inclusive = true)
 
                     val dateExpiry  = nodes[0]  as TypeInsnNode
                     val dateCurrent = nodes[4]  as TypeInsnNode
