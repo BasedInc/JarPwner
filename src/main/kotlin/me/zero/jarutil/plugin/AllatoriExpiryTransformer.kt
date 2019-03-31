@@ -65,7 +65,7 @@ class AllatoriExpiryTransformer : Transformer {
         return true
     }
 
-    override fun printInfo() {
-        println(" AllatoriExpiryTransformer removed ${this.removedMatches} expiry checks")
+    override fun getInfo() : Collection<String> {
+        return Collections.singletonList("Removed ${this.removedMatches} expiry checks")
     }
 }

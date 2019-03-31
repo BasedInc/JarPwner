@@ -12,5 +12,5 @@ interface Transformer {
 
     fun accepts(path: String): Boolean
 
-    fun printInfo()
+    fun getInfo() : Collection<String>
 }

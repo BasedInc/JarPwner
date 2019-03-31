@@ -5,7 +5,6 @@ import java.io.File
 
 fun main(/*args: Array<String>*/) {
     println("Reading Jar File")
-
     val input = JarFileHelper()
     input.read(File("input.jar"))
 
@@ -20,7 +19,9 @@ fun main(/*args: Array<String>*/) {
                 transformer.apply(it.value)
             }
         }
-        transformer.printInfo()
+        transformer.getInfo().forEach {
+            println(" [${transformer.javaClass.simpleName}] $it")
+        }
     }
 
     println("Writing Jar File")
