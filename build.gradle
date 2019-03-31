@@ -1,0 +1,28 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.3.21'
+}
+
+ext {
+    asm_version = '7.1'
+}
+
+group 'me.zero'
+version '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    compile "org.ow2.asm:asm:${asm_version}"
+    compile "org.ow2.asm:asm-util:${asm_version}"
+    compile "commons-io:commons-io:2.6"
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}

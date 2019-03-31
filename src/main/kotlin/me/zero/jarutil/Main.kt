@@ -1,0 +1,28 @@
+package me.zero.jarutil
+
+import me.zero.jarutil.plugin.AllatoriExpiryTransformer
+import java.io.File
+
+fun main(/*args: Array<String>*/) {
+    println("Reading Jar File")
+
+    val input = JarFileHelper()
+    input.read(File("input.jar"))
+
+    val transformers = arrayOf(
+        AllatoriExpiryTransformer()
+    )
+
+    println("Running Transformers")
+    transformers.forEach { transformer ->
+        input.getClasses().forEach {
+            if (transformer.accepts(it.key)) {
+                transformer.apply(it.value)
+            }
+        }
+        transformer.printInfo()
+    }
+
+    println("Writing Jar File")
+    input.write(File("output.jar"))
+}

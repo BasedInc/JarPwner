@@ -1,0 +1,6 @@
+.gradle
+.idea
+out
+
+input.jar
+output.jar
