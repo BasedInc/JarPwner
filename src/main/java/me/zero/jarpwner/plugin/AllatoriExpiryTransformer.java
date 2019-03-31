@@ -26,7 +26,6 @@ public class AllatoriExpiryTransformer implements Transformer {
             INVOKESPECIAL,
             NEW,
             DUP,
-            -1,
             INVOKESPECIAL,
             SWAP,
             INVOKEVIRTUAL,
@@ -45,7 +44,6 @@ public class AllatoriExpiryTransformer implements Transformer {
             LDC,
             INVOKESPECIAL,
             NEW,
-            -1,
             DUP,
             INVOKESPECIAL,
             SWAP,
@@ -64,7 +62,7 @@ public class AllatoriExpiryTransformer implements Transformer {
 
     @Override
     public final void apply(ClassNode cn) {
-        cn.methods.forEach(mn -> PATTERNS.forEach(pattern ->  pattern.find(mn.instructions).forEach(range -> {
+        cn.methods.forEach(mn -> PATTERNS.forEach(pattern ->  pattern.find(mn.instructions, Pattern.SearchFlags.IGNORE_ALL).forEach(range -> {
             var insns = range.getAll(true);
             if (insns == null) {
                 return;
