@@ -1,4 +1,4 @@
-package me.zero.jarutil
+package me.zero.jarpwner
 
 import org.apache.commons.io.IOUtils
 import org.objectweb.asm.ClassReader

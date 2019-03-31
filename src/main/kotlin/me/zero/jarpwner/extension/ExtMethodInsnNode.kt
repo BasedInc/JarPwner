@@ -1,4 +1,4 @@
-package me.zero.jarutil.extension
+package me.zero.jarpwner.extension
 
 import org.objectweb.asm.tree.MethodInsnNode
 

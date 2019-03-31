@@ -1,4 +1,4 @@
-package me.zero.jarutil.transform
+package me.zero.jarpwner.transform
 
 import org.objectweb.asm.tree.ClassNode
 

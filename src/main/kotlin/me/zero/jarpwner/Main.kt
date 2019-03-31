@@ -1,6 +1,6 @@
-package me.zero.jarutil
+package me.zero.jarpwner
 
-import me.zero.jarutil.plugin.AllatoriExpiryTransformer
+import me.zero.jarpwner.plugin.AllatoriExpiryTransformer
 import java.io.File
 
 fun main(/*args: Array<String>*/) {
