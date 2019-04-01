@@ -6,6 +6,9 @@ import org.objectweb.asm.tree.InsnList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static org.objectweb.asm.tree.AbstractInsnNode.*;
 
@@ -78,8 +81,16 @@ public final class Pattern {
         return this.opcodes.clone();
     }
 
+    public final Stream<Integer> stream() {
+        return Stream.of(this.opcodes);
+    }
+
     public static Pattern of(Integer... opcodes) {
         return new Pattern(opcodes);
+    }
+
+    public static Pattern of(Stream<Integer> opcodes) {
+        return new Pattern(opcodes.toArray(Integer[]::new));
     }
 
     public static Pattern of(List<Integer> opcodes) {

@@ -36,23 +36,7 @@ public class AllatoriExpiryTransformer implements Transformer {
             ATHROW
     );
 
-    private static final Pattern PATTERN_NO_OBF = Pattern.of(
-            NEW,
-            DUP,
-            LDC,
-            INVOKESPECIAL,
-            NEW,
-            DUP,
-            INVOKESPECIAL,
-            SWAP,
-            INVOKEVIRTUAL,
-            IFEQ,
-            NEW,
-            DUP,
-            LDC,
-            INVOKESPECIAL,
-            ATHROW
-    );
+    private static final Pattern PATTERN_NO_OBF = Pattern.of(PATTERN.stream().filter(opcode -> opcode != INVOKESTATIC));
 
     private static final List<Pattern> PATTERNS = Arrays.asList(PATTERN, PATTERN_NO_OBF);
 
