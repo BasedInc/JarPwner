@@ -79,7 +79,7 @@ public class AllatoriExpiryTransformer implements Transformer {
             if (!"java/util/Date.after(Ljava/util/Date;)Z".equals(Util.getFullDesc(insns.firstWithOpcode(INVOKEVIRTUAL))))
                 return;
 
-            insns.forEach(mn.instructions::remove);
+            range.delete(mn.instructions);
 
             removedMatches++;
         })));

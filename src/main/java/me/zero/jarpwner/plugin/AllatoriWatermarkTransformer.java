@@ -29,12 +29,9 @@ public class AllatoriWatermarkTransformer implements Transformer {
     @Override
     public void apply(ClassNode cn) {
         cn.methods.forEach(mn -> PATTERN.find(mn.instructions, Pattern.SearchFlags.IGNORE_ALL).forEach(range -> {
-            var insns = range.getAll(true);
-            if (insns == null) {
-                return;
+            if (range.delete(mn.instructions)) {
+                removedMatches++;
             }
-            insns.forEach(mn.instructions::remove);
-            removedMatches++;
         }));
     }
 

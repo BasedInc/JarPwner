@@ -1,6 +1,7 @@
 package me.zero.jarpwner.util;
 
 import org.objectweb.asm.tree.AbstractInsnNode;
+import org.objectweb.asm.tree.InsnList;
 
 /**
  * @author Brady
@@ -16,15 +17,15 @@ public final class InsnRange {
         this.to = to;
     }
 
-    public AbstractInsnNode getFrom() {
+    public final AbstractInsnNode getFrom() {
         return this.from;
     }
 
-    public AbstractInsnNode getTo() {
+    public final AbstractInsnNode getTo() {
         return this.to;
     }
 
-    public InsnRangeList getAll(boolean inclusive) {
+    public final InsnRangeList getAll(boolean inclusive) {
         var current = this.from;
         var last    = this.to;
 
@@ -44,6 +45,15 @@ public final class InsnRange {
         }
 
         return nodes;
+    }
+
+    public final boolean delete(InsnList list) {
+        var insns = this.getAll(true);
+        if (insns == null) {
+            return false;
+        }
+        insns.forEach(list::remove);
+        return true;
     }
 
     public static InsnRange of(AbstractInsnNode from, AbstractInsnNode to) {
