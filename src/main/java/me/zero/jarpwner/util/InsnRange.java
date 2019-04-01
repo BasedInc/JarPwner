@@ -39,7 +39,7 @@ public final class InsnRange {
             current = current.getNext();
 
             // (from => to) was invalid
-            if (current == null) {
+            if (current == null && last != null) {
                 return null;
             }
         }
