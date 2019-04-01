@@ -8,15 +8,11 @@ import org.objectweb.asm.tree.ClassNode;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
 
-import static org.objectweb.asm.ClassReader.SKIP_FRAMES;
-import static org.objectweb.asm.ClassWriter.COMPUTE_FRAMES;
 import static org.objectweb.asm.ClassWriter.COMPUTE_MAXS;
 
 /**
@@ -44,7 +40,7 @@ public class JarFileHelper {
             if (name.endsWith(".class")) {
                 var reader = new ClassReader(bytes);
                 var node = new ClassNode();
-                reader.accept(node, SKIP_FRAMES);
+                reader.accept(node, 0);
                 classes.put(name, node);
             } else {
                 resources.put(name, bytes);
@@ -56,14 +52,8 @@ public class JarFileHelper {
         var jos = new JarOutputStream(new FileOutputStream(file));
 
         for (Map.Entry<String, ClassNode> entry : classes.entrySet()) {
-            var writer = new ClassWriter(COMPUTE_FRAMES | COMPUTE_MAXS);
-
-            try {
-                entry.getValue().accept(writer);
-            } catch (Exception e) {
-                writer = new ClassWriter(COMPUTE_MAXS);
-                entry.getValue().accept(writer);
-            }
+            var writer = new ClassWriter(COMPUTE_MAXS);
+            entry.getValue().accept(writer);
 
             var jarEntry = new JarEntry(entry.getKey());
             jos.putNextEntry(jarEntry);
