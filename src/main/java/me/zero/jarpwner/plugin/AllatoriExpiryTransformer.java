@@ -3,8 +3,7 @@ package me.zero.jarpwner.plugin;
 import me.zero.jarpwner.transform.Transformer;
 import me.zero.jarpwner.util.Pattern;
 import me.zero.jarpwner.util.Util;
-import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.TypeInsnNode;
+import org.objectweb.asm.tree.*;
 
 import java.util.*;
 
@@ -79,7 +78,15 @@ public class AllatoriExpiryTransformer implements Transformer {
             if (!"java/util/Date.after(Ljava/util/Date;)Z".equals(Util.getFullDesc(insns.firstWithOpcode(INVOKEVIRTUAL))))
                 return;
 
-            range.delete(mn.instructions);
+            AbstractInsnNode athrow = insns.firstWithOpcode(ATHROW);
+            AbstractInsnNode before = athrow.getPrevious();
+            mn.instructions.remove(athrow);
+            InsnList replacement = new InsnList();
+            {
+                replacement.add(new MethodInsnNode(INVOKEVIRTUAL, "java/lang/Throwable", "toString", "()Ljava/lang/String;"));
+                replacement.add(new InsnNode(POP));
+            }
+            mn.instructions.insert(before, replacement);
 
             removedMatches++;
         })));
