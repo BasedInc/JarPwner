@@ -43,7 +43,7 @@ public class JarFileHelper {
             if (name.endsWith(".class")) {
                 var reader = new ClassReader(bytes);
                 var node = new ClassNode();
-                reader.accept(node, 0);
+                reader.accept(node, ClassReader.SKIP_FRAMES);
                 classes.put(name, node);
             } else {
                 resources.put(name, bytes);
