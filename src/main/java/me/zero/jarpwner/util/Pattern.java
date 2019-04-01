@@ -44,7 +44,7 @@ public final class Pattern {
 
         outer:
         for (int i = 0; i <= list.size() - this.opcodes.length; i++) {
-            var last = list.get(i);
+            var last = i;
 
             int offset = 0;
             int matched = 0;
@@ -65,11 +65,11 @@ public final class Pattern {
                     continue outer;
                 }
 
-                last = insn;
+                last = index;
                 matched++;
             }
 
-            matches.add(InsnSlice.of(list.get(i), last));
+            matches.add(InsnSlice.of(list, i, last));
         }
 
         return matches;

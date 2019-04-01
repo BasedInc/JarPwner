@@ -63,4 +63,8 @@ public final class InsnSlice {
     public static InsnSlice of(AbstractInsnNode from, AbstractInsnNode to) {
         return new InsnSlice(from, to);
     }
+
+    public static InsnSlice of(InsnList list, int from, int to) {
+        return of(list.get(from), list.get(to));
+    }
 }
