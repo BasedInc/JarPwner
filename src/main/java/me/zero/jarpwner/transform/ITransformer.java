@@ -8,7 +8,7 @@ import java.util.Collection;
  * @author Brady
  * @since 3/31/2019
  */
-public interface Transformer {
+public interface ITransformer {
 
     void apply(ClassNode cn);
 

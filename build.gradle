@@ -5,12 +5,20 @@ plugins {
 ext {
     asm_version          = '7.1'
     commons_io_version   = '2.6'
-    commons_lang_version = '3.8.1'
 }
 
 sourceCompatibility = targetCompatibility = '12'
 compileJava {
     sourceCompatibility = targetCompatibility = '12'
+}
+
+sourceSets {
+    allatori {
+        compileClasspath += main.compileClasspath + main.output
+    }
+    main {
+        runtimeClasspath += allatori.compileClasspath + allatori.output
+    }
 }
 
 group 'me.zero'
@@ -21,8 +29,7 @@ repositories {
 }
 
 dependencies {
-    compile "org.ow2.asm:asm:${asm_version}"
-    compile "org.ow2.asm:asm-util:${asm_version}"
-    compile "commons-io:commons-io:${commons_io_version}"
-    compile "org.apache.commons:commons-lang3:${commons_lang_version}"
+    compile "org.ow2.asm:asm:$asm_version"
+    compile "org.ow2.asm:asm-util:$asm_version"
+    compile "commons-io:commons-io:$commons_io_version"
 }

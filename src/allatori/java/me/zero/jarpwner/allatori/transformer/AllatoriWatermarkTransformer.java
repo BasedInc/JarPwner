@@ -1,6 +1,7 @@
-package me.zero.jarpwner.plugin;
+package me.zero.jarpwner.allatori.transformer;
 
-import me.zero.jarpwner.transform.Transformer;
+import me.zero.jarpwner.transform.ITransformer;
+import me.zero.jarpwner.transform.TransformerMeta;
 import me.zero.jarpwner.util.Pattern;
 import org.objectweb.asm.tree.ClassNode;
 
@@ -13,7 +14,11 @@ import static org.objectweb.asm.Opcodes.*;
  * @author Brady
  * @since 3/31/2019
  */
-public class AllatoriWatermarkTransformer implements Transformer {
+@TransformerMeta(
+        name = "Watermark Remover",
+        desc = "Removes watermarks that are used to trace the source jar back to the client who it belongs to"
+)
+public class AllatoriWatermarkTransformer implements ITransformer {
 
     private static final Pattern PATTERN = Pattern.of(
             SIPUSH,

@@ -1,11 +1,11 @@
 package me.zero.jarpwner;
 
-import me.zero.jarpwner.plugin.AllatoriExpiryTransformer;
-import me.zero.jarpwner.plugin.AllatoriWatermarkTransformer;
+import me.zero.jarpwner.plugin.PluginDiscovery;
+import me.zero.jarpwner.transform.ITransformer;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
 
 /**
  * @author Brady
@@ -18,10 +18,16 @@ public class Main {
         var input = new JarFileHelper();
         input.read(new File("input.jar"));
 
-        var transformers = Arrays.asList(
-                new AllatoriWatermarkTransformer(),
-                new AllatoriExpiryTransformer()
-        );
+        var allatori = PluginDiscovery.getPlugin("allatori");
+        if (allatori.isEmpty()) {
+            System.out.println("Allatori Plugin not found! Exiting.");
+            System.exit(0);
+        }
+
+        var allatoriPlugin = allatori.get();
+        var transformers = new ArrayList<ITransformer>();
+
+        allatoriPlugin.getTransformers().forEach(provider -> transformers.add(provider.provide()));
 
         System.out.println("Running Transformers");
         transformers.forEach(transformer -> {

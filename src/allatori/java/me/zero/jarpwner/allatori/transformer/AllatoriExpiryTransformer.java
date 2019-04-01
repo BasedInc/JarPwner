@@ -1,9 +1,9 @@
-package me.zero.jarpwner.plugin;
+package me.zero.jarpwner.allatori.transformer;
 
-import me.zero.jarpwner.transform.Transformer;
+import me.zero.jarpwner.transform.ITransformer;
+import me.zero.jarpwner.transform.TransformerMeta;
 import me.zero.jarpwner.util.Pattern;
 import me.zero.jarpwner.util.Util;
-import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.TypeInsnNode;
 
@@ -15,7 +15,11 @@ import static org.objectweb.asm.Opcodes.*;
  * @author Brady
  * @since 3/31/2019
  */
-public class AllatoriExpiryTransformer implements Transformer {
+@TransformerMeta(
+        name = "Expiry Remover",
+        desc = "Removes expiry checks that are used to prevent the program from operating after a certain date"
+)
+public class AllatoriExpiryTransformer implements ITransformer {
 
     private static final Pattern PATTERN = Pattern.of(
             NEW,
