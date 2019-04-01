@@ -1,9 +1,11 @@
 package me.zero.jarpwner.util;
 
+import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.InsnList;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 import static org.objectweb.asm.tree.AbstractInsnNode.*;
 
@@ -20,6 +22,23 @@ public final class Pattern {
     }
 
     public final List<InsnRange> find(InsnList list, int flags) {
+        return this.find(list, insn -> {
+            switch (insn.getType()) {
+                case LABEL: {
+                    if ((flags & SearchFlags.IGNORE_LABELS) != 0) return true;
+                }
+                case FRAME: {
+                    if ((flags & SearchFlags.IGNORE_FRAMES) != 0) return true;
+                }
+                case LINE: {
+                    if ((flags & SearchFlags.IGNORE_LINES) != 0) return true;
+                }
+            }
+            return false;
+        });
+    }
+
+    public final List<InsnRange> find(InsnList list, Predicate<AbstractInsnNode> ignoreInsn) {
         List<InsnRange> matches = new ArrayList<>();
 
         outer:
@@ -37,20 +56,9 @@ public final class Pattern {
 
                 var insn = list.get(index);
 
-                // First instruction MUST be what we're looking for
-                if (matched > 0) {
-                    switch (insn.getType()) {
-                        case LABEL: {
-                            if ((flags & SearchFlags.IGNORE_LABELS) != 0) continue;
-                        }
-                        case FRAME: {
-                            if ((flags & SearchFlags.IGNORE_FRAMES) != 0) continue;
-                        }
-                        case LINE: {
-                            if ((flags & SearchFlags.IGNORE_LINES) != 0) continue;
-                        }
-                    }
-                }
+                // First instruction MUST be what we're looking for, only apply the ignore check once we're past it
+                if (matched > 0 && ignoreInsn.test(insn))
+                    continue ;
 
                 if (opcodes[matched] != null && insn.getOpcode() != opcodes[matched]) {
                     continue outer;
