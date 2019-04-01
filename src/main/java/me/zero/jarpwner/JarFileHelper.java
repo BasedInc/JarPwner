@@ -15,6 +15,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
 
+import static org.objectweb.asm.ClassReader.SKIP_FRAMES;
 import static org.objectweb.asm.ClassWriter.COMPUTE_FRAMES;
 import static org.objectweb.asm.ClassWriter.COMPUTE_MAXS;
 
@@ -43,7 +44,7 @@ public class JarFileHelper {
             if (name.endsWith(".class")) {
                 var reader = new ClassReader(bytes);
                 var node = new ClassNode();
-                reader.accept(node, ClassReader.SKIP_FRAMES);
+                reader.accept(node, SKIP_FRAMES);
                 classes.put(name, node);
             } else {
                 resources.put(name, bytes);
