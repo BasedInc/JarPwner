@@ -55,7 +55,7 @@ public class JarFileHelper {
         var jos = new JarOutputStream(new FileOutputStream(file));
 
         for (Map.Entry<String, ClassNode> entry : classes.entrySet()) {
-            var writer = new ClassWriter(COMPUTE_FRAMES | COMPUTE_MAXS);
+            var writer = new ClassWriter(COMPUTE_FRAMES);
 
             try {
                 entry.getValue().accept(writer);

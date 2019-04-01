@@ -52,7 +52,11 @@ public final class InsnRange {
         if (insns == null) {
             return false;
         }
-        insns.forEach(list::remove);
+        insns.forEach(insn -> {
+            if (insn.getOpcode() >= 0) {
+                list.remove(insn);
+            }
+        });
         return true;
     }
 
