@@ -42,7 +42,7 @@ public final class Pattern {
     }
 
     public final List<InsnRange> find(InsnList list, Predicate<AbstractInsnNode> ignoreInsn) {
-        List<InsnRange> matches = new ArrayList<>();
+        var matches = new ArrayList<InsnRange>();
 
         outer:
         for (int i = 0; i <= list.size() - this.opcodes.length; i++) {

@@ -1,5 +1,6 @@
 package me.zero.jarpwner.allatori.transformer;
 
+import me.zero.jarpwner.allatori.util.Patterns;
 import me.zero.jarpwner.transform.ITransformer;
 import me.zero.jarpwner.transform.TransformerMeta;
 import me.zero.jarpwner.util.Pattern;
@@ -21,29 +22,14 @@ import static org.objectweb.asm.Opcodes.*;
 )
 public class AllatoriExpiryTransformer implements ITransformer {
 
-    private static final Pattern PATTERN = Pattern.of(
-            NEW,
-            DUP,
-            LDC,
-            INVOKESPECIAL,
-            NEW,
-            DUP,
-            INVOKESPECIAL,
-            SWAP,
-            INVOKEVIRTUAL,
-            IFEQ,
-            NEW,
-            DUP,
-            LDC,
-            INVOKESTATIC,
-            INVOKESPECIAL,
-            ATHROW
+    private static final List<Pattern> PATTERNS = Arrays.asList(
+            Patterns.EXPIRY_PATTERN,
+            Patterns.EXPIRY_PATTERN_NO_OBF
     );
 
-    private static final Pattern PATTERN_NO_OBF = Pattern.of(PATTERN.stream().filter(opcode -> opcode != INVOKESTATIC));
-
-    private static final List<Pattern> PATTERNS = Arrays.asList(PATTERN, PATTERN_NO_OBF);
-
+    /**
+     * Counter to keep track of the amount of expiry checks removed by this transformer instance
+     */
     private int removedMatches;
 
     @Override

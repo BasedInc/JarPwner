@@ -30,12 +30,12 @@ public class JarFileHelper {
 
         var jarFile = new JarFile(file);
 
-        Enumeration<JarEntry> enumeration = jarFile.entries();
+        var enumeration = jarFile.entries();
         while (enumeration.hasMoreElements()) {
-            JarEntry entry = enumeration.nextElement();
+            var entry       = enumeration.nextElement();
             var inputStream = jarFile.getInputStream(entry);
-            var bytes = IOUtils.toByteArray(inputStream);
-            var name = entry.getName();
+            var bytes       = IOUtils.toByteArray(inputStream);
+            var name        = entry.getName();
 
             if (name.endsWith(".class")) {
                 var reader = new ClassReader(bytes);

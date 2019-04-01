@@ -21,7 +21,7 @@ public final class InsnRangeList extends ArrayList<AbstractInsnNode> {
     }
 
     public <T extends AbstractInsnNode> T firstWithOpcode(int opcode) {
-        List<T> opcodes = allWithOpcode(opcode);
+        var opcodes = this.<T>allWithOpcode(opcode);
         return opcodes.size() > 0 ? opcodes.get(0) : null;
     }
 }

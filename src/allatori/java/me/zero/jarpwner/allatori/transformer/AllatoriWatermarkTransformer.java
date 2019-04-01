@@ -1,5 +1,6 @@
 package me.zero.jarpwner.allatori.transformer;
 
+import me.zero.jarpwner.allatori.util.Patterns;
 import me.zero.jarpwner.transform.ITransformer;
 import me.zero.jarpwner.transform.TransformerMeta;
 import me.zero.jarpwner.util.Pattern;
@@ -7,8 +8,6 @@ import org.objectweb.asm.tree.ClassNode;
 
 import java.util.Collection;
 import java.util.Collections;
-
-import static org.objectweb.asm.Opcodes.*;
 
 /**
  * @author Brady
@@ -20,20 +19,14 @@ import static org.objectweb.asm.Opcodes.*;
 )
 public class AllatoriWatermarkTransformer implements ITransformer {
 
-    private static final Pattern PATTERN = Pattern.of(
-            SIPUSH,
-            SIPUSH,
-            SIPUSH,
-            SIPUSH,
-            POP2,
-            POP2
-    );
-
+    /**
+     * Counter to keep track of the amount of watermarks removed by this transformer instance
+     */
     private int removedMatches;
 
     @Override
     public void apply(ClassNode cn) {
-        cn.methods.forEach(mn -> PATTERN.find(mn.instructions, Pattern.SearchFlags.IGNORE_ALL).forEach(range -> {
+        cn.methods.forEach(mn -> Patterns.WATERMARK_PATTERN.find(mn.instructions, Pattern.SearchFlags.IGNORE_ALL).forEach(range -> {
             if (range.delete(mn.instructions)) {
                 removedMatches++;
             }
