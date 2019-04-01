@@ -3,6 +3,7 @@ package me.zero.jarpwner.allatori.transformer;
 import me.zero.jarpwner.allatori.util.Patterns;
 import me.zero.jarpwner.transform.ITransformer;
 import me.zero.jarpwner.transform.TransformerMeta;
+import me.zero.jarpwner.transform.exception.TransformerException;
 import me.zero.jarpwner.util.Pattern;
 import org.objectweb.asm.tree.ClassNode;
 
@@ -26,9 +27,11 @@ public class AllatoriWatermarkTransformer implements ITransformer {
 
     @Override
     public void apply(ClassNode cn) {
-        cn.methods.forEach(mn -> Patterns.WATERMARK_PATTERN.find(mn.instructions, Pattern.SearchFlags.IGNORE_ALL).forEach(range -> {
-            if (range.delete(mn.instructions)) {
+        cn.methods.forEach(mn -> Patterns.WATERMARK_PATTERN.find(mn.instructions, Pattern.SearchFlags.IGNORE_ALL).forEach(slice -> {
+            if (slice.delete(mn.instructions)) {
                 removedMatches++;
+            } else {
+                throw new TransformerException("Pattern matched but slice instruction list was unable to be constructed");
             }
         }));
     }

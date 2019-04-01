@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
  * @author Brady
  * @since 3/31/2019
  */
-public final class InsnRangeList extends ArrayList<AbstractInsnNode> {
+public final class InsnListSearchable extends ArrayList<AbstractInsnNode> {
 
     @SuppressWarnings("unchecked")
     public <T extends AbstractInsnNode> List<T> allWithOpcode(int opcode) {

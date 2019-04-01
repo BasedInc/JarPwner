@@ -3,6 +3,7 @@ package me.zero.jarpwner.allatori.transformer;
 import me.zero.jarpwner.allatori.util.Patterns;
 import me.zero.jarpwner.transform.ITransformer;
 import me.zero.jarpwner.transform.TransformerMeta;
+import me.zero.jarpwner.transform.exception.TransformerException;
 import me.zero.jarpwner.util.Pattern;
 import me.zero.jarpwner.util.Util;
 import org.objectweb.asm.tree.ClassNode;
@@ -34,13 +35,16 @@ public class AllatoriExpiryTransformer implements ITransformer {
 
     @Override
     public final void apply(ClassNode cn) {
-        cn.methods.forEach(mn -> PATTERNS.forEach(pattern -> pattern.find(mn.instructions, Pattern.SearchFlags.IGNORE_ALL).forEach(range -> {
-            var insns = range.getAll(true);
+        cn.methods.forEach(mn -> PATTERNS.forEach(pattern -> pattern.find(mn.instructions, Pattern.SearchFlags.IGNORE_ALL).forEach(slice -> {
+            var insns = slice.getAll(true);
             if (insns == null) {
-                return;
+                throw new TransformerException("Pattern matched but slice instruction list was unable to be constructed");
             }
 
             var newInsns = insns.<TypeInsnNode>allWithOpcode(NEW);
+            if (newInsns.size() != 3) {
+                throw new TransformerException("Pattern matched but 3 NEW instructions were not found!");
+            }
 
             if (!"java/util/Date".equals(newInsns.get(0).desc))
                 return;
@@ -54,7 +58,7 @@ public class AllatoriExpiryTransformer implements ITransformer {
             if (!"java/util/Date.after(Ljava/util/Date;)Z".equals(Util.getFullDesc(insns.firstWithOpcode(INVOKEVIRTUAL))))
                 return;
 
-            range.delete(mn.instructions);
+            slice.delete(mn.instructions);
 
             removedMatches++;
         })));

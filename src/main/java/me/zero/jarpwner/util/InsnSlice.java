@@ -7,12 +7,12 @@ import org.objectweb.asm.tree.InsnList;
  * @author Brady
  * @since 3/31/2019
  */
-public final class InsnRange {
+public final class InsnSlice {
 
     private final AbstractInsnNode from;
     private final AbstractInsnNode to;
 
-    private InsnRange(AbstractInsnNode from, AbstractInsnNode to) {
+    private InsnSlice(AbstractInsnNode from, AbstractInsnNode to) {
         this.from = from;
         this.to = to;
     }
@@ -25,7 +25,7 @@ public final class InsnRange {
         return this.to;
     }
 
-    public final InsnRangeList getAll(boolean inclusive) {
+    public final InsnListSearchable getAll(boolean inclusive) {
         var current = this.from;
         var last    = this.to;
 
@@ -33,7 +33,7 @@ public final class InsnRange {
             last = last.getNext();
         }
 
-        var nodes = new InsnRangeList();
+        var nodes = new InsnListSearchable();
         while (current != last) {
             nodes.add(current);
             current = current.getNext();
@@ -60,7 +60,7 @@ public final class InsnRange {
         return true;
     }
 
-    public static InsnRange of(AbstractInsnNode from, AbstractInsnNode to) {
-        return new InsnRange(from, to);
+    public static InsnSlice of(AbstractInsnNode from, AbstractInsnNode to) {
+        return new InsnSlice(from, to);
     }
 }

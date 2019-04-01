@@ -6,8 +6,6 @@ import org.objectweb.asm.tree.InsnList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static org.objectweb.asm.tree.AbstractInsnNode.*;
@@ -24,7 +22,7 @@ public final class Pattern {
         this.opcodes = opcodes;
     }
 
-    public final List<InsnRange> find(InsnList list, int flags) {
+    public final List<InsnSlice> find(InsnList list, int flags) {
         return this.find(list, insn -> {
             switch (insn.getType()) {
                 case LABEL: {
@@ -41,8 +39,8 @@ public final class Pattern {
         });
     }
 
-    public final List<InsnRange> find(InsnList list, Predicate<AbstractInsnNode> ignoreInsn) {
-        var matches = new ArrayList<InsnRange>();
+    public final List<InsnSlice> find(InsnList list, Predicate<AbstractInsnNode> ignoreInsn) {
+        var matches = new ArrayList<InsnSlice>();
 
         outer:
         for (int i = 0; i <= list.size() - this.opcodes.length; i++) {
@@ -71,7 +69,7 @@ public final class Pattern {
                 matched++;
             }
 
-            matches.add(InsnRange.of(list.get(i), last));
+            matches.add(InsnSlice.of(list.get(i), last));
         }
 
         return matches;
