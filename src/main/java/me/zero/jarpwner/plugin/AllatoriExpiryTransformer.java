@@ -6,10 +6,7 @@ import me.zero.jarpwner.util.Util;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.TypeInsnNode;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static org.objectweb.asm.Opcodes.*;
 
@@ -82,6 +79,8 @@ public class AllatoriExpiryTransformer implements Transformer {
             if (!"java/util/Date.after(Ljava/util/Date;)Z".equals(Util.getFullDesc(insns.firstWithOpcode(INVOKEVIRTUAL))))
                 return;
 
+            insns.forEach(mn.instructions::remove);
+
             removedMatches++;
         })));
     }
@@ -94,7 +93,7 @@ public class AllatoriExpiryTransformer implements Transformer {
     @Override
     public final Collection<String> getInfo() {
         return Collections.singletonList(
-                String.format("Removed %d expiry checks", this.removedMatches)
+                String.format("Removed %d expiry check(s)", this.removedMatches)
         );
     }
 }

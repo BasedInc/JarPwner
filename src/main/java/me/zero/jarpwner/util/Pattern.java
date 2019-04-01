@@ -37,15 +37,18 @@ public final class Pattern {
 
                 var insn = list.get(index);
 
-                switch (insn.getType()) {
-                    case LABEL: {
-                        if ((flags & SearchFlags.IGNORE_LABELS) != 0) continue;
-                    }
-                    case FRAME: {
-                        if ((flags & SearchFlags.IGNORE_FRAMES) != 0) continue;
-                    }
-                    case LINE: {
-                        if ((flags & SearchFlags.IGNORE_LINES) != 0) continue;
+                // First instruction MUST be what we're looking for
+                if (matched > 0) {
+                    switch (insn.getType()) {
+                        case LABEL: {
+                            if ((flags & SearchFlags.IGNORE_LABELS) != 0) continue;
+                        }
+                        case FRAME: {
+                            if ((flags & SearchFlags.IGNORE_FRAMES) != 0) continue;
+                        }
+                        case LINE: {
+                            if ((flags & SearchFlags.IGNORE_LINES) != 0) continue;
+                        }
                     }
                 }
 
@@ -63,8 +66,16 @@ public final class Pattern {
         return matches;
     }
 
+    public final Integer[] getOpcodes() {
+        return this.opcodes.clone();
+    }
+
     public static Pattern of(Integer... opcodes) {
         return new Pattern(opcodes);
+    }
+
+    public static Pattern of(List<Integer> opcodes) {
+        return new Pattern(opcodes.toArray(new Integer[0]));
     }
 
     public interface SearchFlags {

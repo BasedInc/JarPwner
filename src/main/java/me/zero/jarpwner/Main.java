@@ -1,10 +1,11 @@
 package me.zero.jarpwner;
 
 import me.zero.jarpwner.plugin.AllatoriExpiryTransformer;
+import me.zero.jarpwner.plugin.AllatoriWatermarkTransformer;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
+import java.util.Arrays;
 
 /**
  * @author Brady
@@ -17,7 +18,8 @@ public class Main {
         var input = new JarFileHelper();
         input.read(new File("input.jar"));
 
-        var transformers = Collections.singletonList(
+        var transformers = Arrays.asList(
+                new AllatoriWatermarkTransformer(),
                 new AllatoriExpiryTransformer()
         );
 
