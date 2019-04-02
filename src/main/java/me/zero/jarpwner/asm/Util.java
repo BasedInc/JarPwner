@@ -1,4 +1,4 @@
-package me.zero.jarpwner.util;
+package me.zero.jarpwner.asm;
 
 import org.objectweb.asm.tree.MethodInsnNode;
 
