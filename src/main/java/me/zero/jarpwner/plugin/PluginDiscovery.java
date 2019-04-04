@@ -19,7 +19,7 @@ public final class PluginDiscovery {
         if (plugins == null) {
             plugins = new ArrayList<>();
             var loader = ServiceLoader.load(IPlugin.class);
-            loader.iterator().forEachRemaining(plugins::add);
+            loader.forEach(plugins::add);
         }
 
         return plugins;
