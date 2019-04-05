@@ -2,6 +2,7 @@ package me.zero.jarpwner.allatori;
 
 import me.zero.jarpwner.allatori.transformer.AllatoriExpiryTransformer;
 import me.zero.jarpwner.allatori.transformer.AllatoriWatermarkTransformer;
+import me.zero.jarpwner.allatori.transformer.string.AllatoriFastStringTransformer;
 import me.zero.jarpwner.plugin.IPlugin;
 import me.zero.jarpwner.transform.ITransformerProvider;
 
@@ -37,7 +38,8 @@ public final class AllatoriPlugin implements IPlugin {
         if (this.transformers == null) {
             this.transformers = Arrays.asList(
                     ITransformerProvider.create(AllatoriWatermarkTransformer.class, AllatoriWatermarkTransformer::new),
-                    ITransformerProvider.create(AllatoriExpiryTransformer.class, AllatoriExpiryTransformer::new)
+                    ITransformerProvider.create(AllatoriExpiryTransformer.class, AllatoriExpiryTransformer::new),
+                    ITransformerProvider.create(AllatoriFastStringTransformer.class, AllatoriFastStringTransformer::new)
             );
         }
 

@@ -24,6 +24,10 @@ sourceSets {
 group 'me.zero'
 version '1.0'
 
+jar {
+    from sourceSets.allatori.output
+}
+
 repositories {
     mavenCentral()
 }

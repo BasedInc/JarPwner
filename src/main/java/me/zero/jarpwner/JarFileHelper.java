@@ -51,7 +51,7 @@ public class JarFileHelper {
     public final void write(File file) throws IOException {
         var jos = new JarOutputStream(new FileOutputStream(file));
 
-        for (Map.Entry<String, ClassNode> entry : classes.entrySet()) {
+        for (var entry : classes.entrySet()) {
             var writer = new ClassWriter(COMPUTE_MAXS);
             entry.getValue().accept(writer);
 
@@ -61,7 +61,7 @@ public class JarFileHelper {
             jos.closeEntry();
         }
 
-        for (Map.Entry<String, byte[]> entry : resources.entrySet()) {
+        for (var entry : resources.entrySet()) {
             var jarEntry = new JarEntry(entry.getKey());
             jos.putNextEntry(jarEntry);
             jos.write(entry.getValue());
