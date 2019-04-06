@@ -1,4 +1,4 @@
-package me.zero.jarpwner.asm.provider;
+package me.zero.jarpwner.util.provider;
 
 /**
  * A type of provider that contains a cache of the paths to whatever the key type is.

@@ -1,5 +1,6 @@
-package me.zero.jarpwner.asm;
+package me.zero.jarpwner.asm.search;
 
+import me.zero.jarpwner.asm.InsnSlice;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.InsnList;
 

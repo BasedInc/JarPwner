@@ -1,4 +1,4 @@
-package me.zero.jarpwner.asm.provider;
+package me.zero.jarpwner.util.provider;
 
 import java.util.function.Function;
 

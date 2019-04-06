@@ -1,6 +1,6 @@
 package me.zero.jarpwner.transform;
 
-import me.zero.jarpwner.asm.provider.jar.IJarFileProvider;
+import me.zero.jarpwner.util.jar.IJarFileProvider;
 
 /**
  * @author Brady

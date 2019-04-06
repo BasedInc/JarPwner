@@ -1,6 +1,6 @@
-package me.zero.jarpwner.asm.provider.jar;
+package me.zero.jarpwner.util.jar;
 
-import me.zero.jarpwner.asm.provider.IAcquiredProvider;
+import me.zero.jarpwner.util.provider.IAcquiredProvider;
 import org.objectweb.asm.tree.ClassNode;
 
 /**

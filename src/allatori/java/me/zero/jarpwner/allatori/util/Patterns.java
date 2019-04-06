@@ -1,6 +1,6 @@
 package me.zero.jarpwner.allatori.util;
 
-import me.zero.jarpwner.asm.Pattern;
+import me.zero.jarpwner.asm.search.Pattern;
 
 import static org.objectweb.asm.Opcodes.*;
 

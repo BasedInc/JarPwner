@@ -1,4 +1,4 @@
-package me.zero.jarpwner.asm.provider;
+package me.zero.jarpwner.util.provider;
 
 import java.util.Map;
 
@@ -17,5 +17,9 @@ public interface IAcquiredProvider<T> extends IProvider<T> {
     @Override
     default T forName(String path) {
         return getAll().get(path);
+    }
+
+    static <T> IAcquiredProvider<T> byMap(Map<String, T> map) {
+        return () -> map;
     }
 }

@@ -1,7 +1,7 @@
 package me.zero.jarpwner.allatori.transformer.string;
 
 import me.zero.jarpwner.asm.AsmUtils;
-import me.zero.jarpwner.asm.Pattern;
+import me.zero.jarpwner.asm.search.Pattern;
 import me.zero.jarpwner.asm.cl.ASMClassLoader;
 import me.zero.jarpwner.asm.cl.IASMClassLoader;
 import me.zero.jarpwner.transform.ITransformerContext;

@@ -5,7 +5,7 @@ import me.zero.jarpwner.transform.ITransformerContext;
 import me.zero.jarpwner.transform.Transformer;
 import me.zero.jarpwner.transform.TransformerMeta;
 import me.zero.jarpwner.transform.exception.TransformerException;
-import me.zero.jarpwner.asm.Pattern;
+import me.zero.jarpwner.asm.search.Pattern;
 import me.zero.jarpwner.asm.AsmUtils;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.TypeInsnNode;

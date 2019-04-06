@@ -1,6 +1,6 @@
 package me.zero.jarpwner.asm;
 
-import me.zero.jarpwner.asm.provider.IProvider;
+import me.zero.jarpwner.util.provider.IProvider;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
