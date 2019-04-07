@@ -88,6 +88,11 @@ public class AllatoriFastStringTransformer extends Transformer {
                         return;
                 }
 
+                if (insn instanceof TypeInsnNode) {
+                    if (!((TypeInsnNode) insn).desc.equals("java/lang/String"))
+                        return;
+                }
+
                 if (insn.getOpcode() >= 0 && !OPCODES.contains(insn.getOpcode())) {
                     return;
                 }
