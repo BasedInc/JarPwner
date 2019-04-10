@@ -1,17 +1,17 @@
 package me.zero.jarpwner;
 
+import me.zero.jarpwner.plugin.IPlugin;
+import me.zero.jarpwner.util.jar.IJarFileProvider;
 import me.zero.jarpwner.util.jar.JarReader;
 import me.zero.jarpwner.util.jar.JarWriter;
-import me.zero.jarpwner.util.provider.IAcquiredProvider;
-import me.zero.jarpwner.util.jar.IJarFileProvider;
 import me.zero.jarpwner.plugin.PluginDiscovery;
 import me.zero.jarpwner.transform.ITransformer;
-import org.objectweb.asm.tree.ClassNode;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Brady
@@ -29,10 +29,15 @@ public class Main {
             System.exit(0);
         }
 
-        var allatoriPlugin = allatori.get();
-        var transformers = new ArrayList<ITransformer>();
+        var pwner = PluginDiscovery.getPlugin("pwner");
+        if (pwner.isEmpty()) {
+            System.out.println("Pwner Plugin not found! Exiting.");
+            System.exit(0);
+        }
 
-        allatoriPlugin.getTransformers().forEach(provider -> transformers.add(provider.provide(() -> jarFileProvider)));
+        var transformers = new ArrayList<ITransformer>();
+        transformers.addAll(getTransformers(allatori.get(), jarFileProvider));
+        transformers.addAll(getTransformers(pwner.get(), jarFileProvider));
 
         System.out.println("Running Transformers");
         transformers.forEach(ITransformer::setup);
@@ -50,5 +55,9 @@ public class Main {
 
         System.out.println("Writing Jar File");
         JarWriter.write(new File("output.jar"), jarFileProvider);
+    }
+
+    private static List<ITransformer> getTransformers(IPlugin plugin, IJarFileProvider provider) {
+        return plugin.getTransformers().stream().map(p -> p.provide(() -> provider)).collect(Collectors.toList());
     }
 }
