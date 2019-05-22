@@ -15,7 +15,7 @@ public final class PluginDiscovery {
 
     private static List<IPlugin> plugins;
 
-    public static List<IPlugin> getPlugins() {
+    public static synchronized List<IPlugin> getPlugins() {
         if (plugins == null) {
             plugins = new ArrayList<>();
             var loader = ServiceLoader.load(IPlugin.class);
