@@ -19,6 +19,9 @@ sourceSets {
     pwner {
         compileClasspath += main.compileClasspath + main.output
     }
+    yourkit {
+        compileClasspath += main.compileClasspath + main.output
+    }
     main {
         runtimeClasspath += allatori.compileClasspath + allatori.output + pwner.compileClasspath + pwner.output
     }

@@ -15,7 +15,7 @@ import java.util.List;
  */
 public final class AllatoriPlugin implements IPlugin {
 
-    private List<ITransformerProvider> transformers;
+    private List<ITransformerProvider<?>> transformers;
 
     @Override
     public String getName() {
@@ -33,7 +33,7 @@ public final class AllatoriPlugin implements IPlugin {
     }
 
     @Override
-    public List<ITransformerProvider> getTransformers() {
+    public List<ITransformerProvider<?>> getTransformers() {
         // Lazily create the transformer providers
         if (this.transformers == null) {
             this.transformers = Arrays.asList(

@@ -59,7 +59,7 @@ public class Main {
 
         PluginDiscovery.getPlugins().forEach(plugin ->
             items.add(new SelectorItem(
-                plugin.getId(),
+                plugin.getName(),
                 () -> pluginCallback.accept(plugin)))
         );
 

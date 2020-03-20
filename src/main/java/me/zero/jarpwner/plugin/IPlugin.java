@@ -16,5 +16,5 @@ public interface IPlugin {
 
     String getDescription();
 
-    List<ITransformerProvider> getTransformers();
+    List<ITransformerProvider<?>> getTransformers();
 }
