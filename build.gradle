@@ -23,7 +23,9 @@ sourceSets {
         compileClasspath += main.compileClasspath + main.output
     }
     main {
-        runtimeClasspath += allatori.compileClasspath + allatori.output + pwner.compileClasspath + pwner.output
+        runtimeClasspath += allatori.compileClasspath + allatori.output
+        runtimeClasspath += pwner.compileClasspath + pwner.output
+        runtimeClasspath += yourkit.compileClasspath + yourkit.output
     }
 }
 
