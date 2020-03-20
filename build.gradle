@@ -7,9 +7,9 @@ ext {
     commons_io_version   = '2.6'
 }
 
-sourceCompatibility = targetCompatibility = '12'
+sourceCompatibility = targetCompatibility = '13'
 compileJava {
-    sourceCompatibility = targetCompatibility = '12'
+    sourceCompatibility = targetCompatibility = '13'
 }
 
 sourceSets {
