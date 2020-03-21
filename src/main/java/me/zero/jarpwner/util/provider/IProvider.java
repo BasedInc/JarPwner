@@ -1,5 +1,10 @@
 package me.zero.jarpwner.util.provider;
 
+import me.zero.jarpwner.asm.AsmUtils;
+import org.apache.commons.io.IOUtils;
+import org.objectweb.asm.tree.ClassNode;
+
+import java.io.InputStream;
 import java.util.function.Function;
 
 /**
@@ -33,5 +38,17 @@ public interface IProvider<T> {
      */
     default Function<String, T> function() {
         return this::forName;
+    }
+
+    static IProvider<ClassNode> byClassLoader(ClassLoader classLoader) {
+        return path -> {
+            try {
+                InputStream stream = classLoader.getResourceAsStream(path + ".class");
+                byte[] bytes = IOUtils.toByteArray(stream);
+                return AsmUtils.classFromBytes(bytes, 0);
+            } catch (Exception e) {
+                return null;
+            }
+        };
     }
 }

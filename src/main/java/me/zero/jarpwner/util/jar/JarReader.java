@@ -1,8 +1,8 @@
 package me.zero.jarpwner.util.jar;
 
+import me.zero.jarpwner.asm.AsmUtils;
 import me.zero.jarpwner.util.provider.IAcquiredProvider;
 import org.apache.commons.io.IOUtils;
-import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.ClassNode;
 
 import java.io.File;
@@ -32,10 +32,7 @@ public class JarReader {
             var name        = entry.getName();
 
             if (name.endsWith(".class")) {
-                var reader = new ClassReader(bytes);
-                var node = new ClassNode();
-                reader.accept(node, 0);
-                classes.put(name, node);
+                classes.put(name.substring(0, name.length() - ".class".length()), AsmUtils.classFromBytes(bytes, 0));
             } else {
                 resources.put(name, bytes);
             }

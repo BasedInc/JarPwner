@@ -1,6 +1,6 @@
 package me.zero.jarpwner.util.jar;
 
-import org.objectweb.asm.ClassWriter;
+import me.zero.jarpwner.asm.ContextClassWriter;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
 
+import static org.objectweb.asm.ClassWriter.COMPUTE_FRAMES;
 import static org.objectweb.asm.ClassWriter.COMPUTE_MAXS;
 
 /**
@@ -22,10 +23,10 @@ public class JarWriter {
         var jos = new JarOutputStream(new FileOutputStream(file));
 
         for (var entry : provider.getClasses().getAll().entrySet()) {
-            var writer = new ClassWriter(COMPUTE_MAXS);
+            var writer = new ContextClassWriter(COMPUTE_FRAMES | COMPUTE_MAXS, provider.getClasses());
             entry.getValue().accept(writer);
 
-            var jarEntry = new JarEntry(entry.getKey());
+            var jarEntry = new JarEntry(entry.getKey() + ".class");
             jos.putNextEntry(jarEntry);
             jos.write(writer.toByteArray());
             jos.closeEntry();

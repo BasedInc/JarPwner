@@ -73,9 +73,7 @@ public final class AsmUtils {
 
         if (cn.superName != null) {
             ClassNode superNode = provider.forName(cn.superName);
-            if (superNode != null && isAssignableFrom(provider, from, superNode)) {
-                return true;
-            }
+            return superNode != null && isAssignableFrom(provider, from, superNode);
         }
 
         return false;
