@@ -1,5 +1,6 @@
 package me.zero.jarpwner.allatori.transformer.string;
 
+import me.zero.jarpwner.allatori.util.Patterns;
 import me.zero.jarpwner.asm.AsmUtils;
 import me.zero.jarpwner.asm.search.Pattern;
 import me.zero.jarpwner.asm.cl.ASMClassLoader;
@@ -23,11 +24,6 @@ import static org.objectweb.asm.Opcodes.*;
         desc = "Decrypts strings that were encrypted using the fast mode"
 )
 public class AllatoriFastStringTransformer extends Transformer {
-
-    private static final Pattern PATTERN = Pattern.of(
-            LDC,
-            INVOKESTATIC
-    );
 
     private static final List<Integer> OPCODES = Arrays.asList(
             ICONST_1,
@@ -102,7 +98,7 @@ public class AllatoriFastStringTransformer extends Transformer {
 
             // Find callers
             this.context.getSource().getClasses().getAll().forEach((path, node) -> node.methods.forEach(nodeMn -> {
-                PATTERN.find(nodeMn.instructions, Pattern.SearchFlags.IGNORE_ALL).forEach(slice -> {
+                Patterns.STRING_DECRYPT.find(nodeMn.instructions, Pattern.SearchFlags.IGNORE_ALL).forEach(slice -> {
                     var ldc = (LdcInsnNode) slice.getFrom();
                     if (!(ldc.cst instanceof String))
                         return;

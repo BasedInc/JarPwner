@@ -10,6 +10,11 @@ import static org.objectweb.asm.Opcodes.*;
  */
 public interface Patterns {
 
+    Pattern STRING_DECRYPT = Pattern.of(
+            LDC,
+            INVOKESTATIC
+    );
+
     Pattern EXPIRY_PATTERN = Pattern.of(
             NEW,
             DUP,
