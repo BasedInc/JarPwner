@@ -14,7 +14,9 @@ import java.util.*;
  * @author Brady
  * @since 3/31/2019
  */
-public class Main {
+public final class Main {
+
+    private Main() {}
 
     public static void main(String[] args) throws IOException {
         final var optionParser = new OptionParser();

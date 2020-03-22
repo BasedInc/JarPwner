@@ -6,6 +6,7 @@ ext {
     asm_version          = '7.3.1'
     commons_io_version   = '2.6'
     jopt_simple_version  = '6.0-alpha-3'
+    log4j_version        = '2.12.1'
 }
 
 sourceCompatibility = targetCompatibility = '13'
@@ -46,4 +47,5 @@ dependencies {
     compile "org.ow2.asm:asm-util:$asm_version"
     compile "commons-io:commons-io:$commons_io_version"
     compile "net.sf.jopt-simple:jopt-simple:$jopt_simple_version"
+    compile "org.apache.logging.log4j:log4j-core:$log4j_version"
 }
