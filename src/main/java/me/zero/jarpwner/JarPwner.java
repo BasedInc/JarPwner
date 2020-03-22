@@ -65,7 +65,7 @@ public enum JarPwner {
             });
 
             transformer.getInfo().forEach(info ->
-                this.logger.info(" [%s] %s", transformer.getClass().getSimpleName(), info));
+                this.logger.info("[%s] %s", transformer.getClass().getSimpleName(), info));
         });
         transformers.forEach(ITransformer::cleanup);
 

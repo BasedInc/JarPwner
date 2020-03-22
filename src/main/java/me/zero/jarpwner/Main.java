@@ -21,7 +21,7 @@ public final class Main {
     public static void main(String[] args) throws IOException {
         final var optionParser = new OptionParser();
 
-        final var helpOption = optionParser.acceptsAll(Arrays.asList("h", "help"))
+        final var helpOption = optionParser.acceptsAll(Arrays.asList("h", "help"), "Displays this menu")
             .forHelp();
 
         final var inputOption = optionParser.acceptsAll(Arrays.asList("in", "input"), "The input jar to be processed")
@@ -42,9 +42,7 @@ public final class Main {
             .withRequiredArg()
             .required();
 
-        final var computeFramesOption = optionParser.acceptsAll(Arrays.asList("compute-frames", "frames"), "Enable COMPUTE_FRAMES flag when writing classes")
-            .withOptionalArg()
-            .ofType(Boolean.TYPE);
+        final var computeFramesOption = optionParser.acceptsAll(Arrays.asList("f", "frames"), "Enable COMPUTE_FRAMES flag when writing classes");
 
         final OptionSet optionSet;
         try {
