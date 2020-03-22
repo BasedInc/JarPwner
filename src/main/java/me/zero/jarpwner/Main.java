@@ -42,8 +42,7 @@ public class Main {
 
         final var computeFramesOption = optionParser.acceptsAll(Arrays.asList("compute-frames", "frames"), "Enable COMPUTE_FRAMES flag when writing classes")
             .withOptionalArg()
-            .ofType(Boolean.TYPE)
-            .defaultsTo(false);
+            .ofType(Boolean.TYPE);
 
         final OptionSet optionSet;
         try {
@@ -67,7 +66,7 @@ public class Main {
             outputOption.value(optionSet),
             classPathOption.values(optionSet),
             pluginOption.values(optionSet),
-            computeFramesOption.value(optionSet)
+            optionSet.has(computeFramesOption)
         ));
     }
 }
