@@ -7,7 +7,7 @@ import org.objectweb.asm.tree.ClassNode;
  * @author Brady
  * @since 4/6/2019
  */
-class JarFileProvider implements IJarFileProvider {
+final class JarFileProvider implements IJarFileProvider {
 
     private IAcquiredProvider<ClassNode> classes;
     private IAcquiredProvider<byte[]> resources;

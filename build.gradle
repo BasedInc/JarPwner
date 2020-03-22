@@ -5,6 +5,7 @@ plugins {
 ext {
     asm_version          = '7.3.1'
     commons_io_version   = '2.6'
+    jopt_simple_version  = '6.0-alpha-3'
 }
 
 sourceCompatibility = targetCompatibility = '13'
@@ -44,4 +45,5 @@ dependencies {
     compile "org.ow2.asm:asm:$asm_version"
     compile "org.ow2.asm:asm-util:$asm_version"
     compile "commons-io:commons-io:$commons_io_version"
+    compile "net.sf.jopt-simple:jopt-simple:$jopt_simple_version"
 }

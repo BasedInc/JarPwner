@@ -14,7 +14,7 @@ import java.util.jar.JarFile;
  * @author Brady
  * @since 4/6/2019
  */
-public class JarReader {
+public final class JarReader {
 
     private JarReader() {}
 

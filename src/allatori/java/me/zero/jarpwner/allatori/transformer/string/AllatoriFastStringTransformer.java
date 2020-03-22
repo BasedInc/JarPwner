@@ -156,11 +156,6 @@ public class AllatoriFastStringTransformer extends Transformer {
     }
 
     @Override
-    public boolean accepts(String path) {
-        return true;
-    }
-
-    @Override
     public Collection<String> getInfo() {
         return Arrays.asList(
                 String.format("Replaced %d decrypted string(s) with %d decryptor(s)", this.succeeded, this.decryptors),

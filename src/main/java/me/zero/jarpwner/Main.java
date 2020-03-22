@@ -1,17 +1,14 @@
 package me.zero.jarpwner;
 
-import me.zero.jarpwner.plugin.IPlugin;
-import me.zero.jarpwner.util.jar.IJarFileProvider;
-import me.zero.jarpwner.util.jar.JarReader;
-import me.zero.jarpwner.util.jar.JarWriter;
-import me.zero.jarpwner.plugin.PluginDiscovery;
-import me.zero.jarpwner.transform.ITransformer;
+import joptsimple.OptionException;
+import joptsimple.OptionParser;
+import joptsimple.OptionSet;
+import joptsimple.util.PathConverter;
+import joptsimple.util.PathProperties;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 /**
  * @author Brady
@@ -20,78 +17,57 @@ import java.util.stream.Collectors;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        System.out.println("Reading Jar File");
-        var jarFileProvider = JarReader.read(new File("input.jar"));
+        final var optionParser = new OptionParser();
 
-        var transformers = new ArrayList<ITransformer>();
-        showSelection(plugin -> transformers.addAll(getTransformers(plugin, jarFileProvider)));
+        final var helpOption = optionParser.acceptsAll(Arrays.asList("h", "help"))
+            .forHelp();
 
-        if (transformers.size() == 0) {
-            System.out.println("No transformers provided, exiting.");
+        final var inputOption = optionParser.acceptsAll(Arrays.asList("in", "input"), "The input jar to be processed")
+            .withRequiredArg()
+            .withValuesConvertedBy(new PathConverter(PathProperties.READABLE))
+            .required();
+
+        final var outputOption = optionParser.acceptsAll(Arrays.asList("out", "output"), "The output location for the processed jar")
+            .withRequiredArg()
+            .withValuesConvertedBy(new PathConverter())
+            .defaultsTo(Path.of("output.jar"));
+
+        final var classPathOption = optionParser.acceptsAll(Arrays.asList("c", "classpath"), "Dependencies for the input jar, usually only required when compute frames is enabled")
+            .withRequiredArg()
+            .withValuesConvertedBy(new PathConverter(PathProperties.READABLE));
+
+        final var pluginOption = optionParser.acceptsAll(Arrays.asList("p", "plugin"), "Dependencies for the input jar, usually only required when compute frames is enabled")
+            .withRequiredArg()
+            .required();
+
+        final var computeFramesOption = optionParser.acceptsAll(Arrays.asList("compute-frames", "frames"), "Enable COMPUTE_FRAMES flag when writing classes")
+            .withOptionalArg()
+            .ofType(Boolean.TYPE)
+            .defaultsTo(false);
+
+        final OptionSet optionSet;
+        try {
+            optionSet = optionParser.parse(args);
+        } catch (OptionException e) {
+            System.err.println(e.toString());
+            System.exit(1);
             return;
         }
 
-        System.out.println("Running Transformers");
-        transformers.forEach(ITransformer::setup);
-        transformers.forEach(transformer -> {
-            jarFileProvider.getClasses().getAll().forEach((name, cn) -> {
-                if (transformer.accepts(name)) {
-                    transformer.apply(cn);
-                }
-            });
-
-            transformer.getInfo().forEach(info ->
-                    System.out.printf(" [%s] %s\n", transformer.getClass().getSimpleName(), info));
-        });
-        transformers.forEach(ITransformer::cleanup);
-
-        System.out.println("Writing Jar File");
-        JarWriter.write(new File("output.jar"), jarFileProvider);
-    }
-
-    private static List<ITransformer> getTransformers(IPlugin plugin, IJarFileProvider provider) {
-        return plugin.getTransformers().stream().map(p -> p.provide(() -> provider)).collect(Collectors.toList());
-    }
-
-    private static void showSelection(Consumer<IPlugin> pluginCallback) {
-        var items = new ArrayList<SelectorItem>();
-        boolean[] menu = { true }; // lol
-
-        PluginDiscovery.getPlugins().forEach(plugin ->
-            items.add(new SelectorItem(
-                plugin.getName(),
-                () -> pluginCallback.accept(plugin)))
-        );
-
-        items.add(new SelectorItem("(Exit)", () -> menu[0] = false));
-
-        Scanner s = new Scanner(System.in);
-        while (menu[0]) {
-            System.out.println("Select Available Plugins");
-            for (int i = 0; i < items.size(); i++) {
-                System.out.printf("%d. %s\n", i + 1, items.get(i).label);
-            }
-            System.out.print("#: ");
-
-            SelectorItem action = items.get(s.nextInt() - 1);
-            action.action.run();
-            items.remove(action);
-
-            // If we selected all available transformers don't require the user to exit
-            if (items.size() == 1) {
-                break;
-            }
+        if (optionSet.has(helpOption)) {
+            try {
+                optionParser.printHelpOn(System.out);
+            } catch (IOException ignored) {}
+            System.exit(0);
+            return;
         }
-        s.close();
-    }
 
-    private static final class SelectorItem {
-        String label;
-        Runnable action;
-
-        public SelectorItem(String label, Runnable action) {
-            this.label = label;
-            this.action = action;
-        }
+        JarPwner.INSTANCE.run(new Options(
+            inputOption.value(optionSet),
+            outputOption.value(optionSet),
+            classPathOption.values(optionSet),
+            pluginOption.values(optionSet),
+            computeFramesOption.value(optionSet)
+        ));
     }
 }

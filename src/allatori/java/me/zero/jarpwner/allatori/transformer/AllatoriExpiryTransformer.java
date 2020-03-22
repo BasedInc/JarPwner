@@ -70,11 +70,6 @@ public class AllatoriExpiryTransformer extends Transformer {
     }
 
     @Override
-    public boolean accepts(String path) {
-        return true;
-    }
-
-    @Override
     public Collection<String> getInfo() {
         return Collections.singletonList(
                 String.format("Removed %d expiry check(s)", this.removedMatches)

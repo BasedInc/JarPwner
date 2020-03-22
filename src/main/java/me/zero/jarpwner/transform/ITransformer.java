@@ -37,7 +37,9 @@ public interface ITransformer {
      * @param path
      * @return Whether or not the path is accepted
      */
-    boolean accepts(String path);
+    default boolean accepts(String path) {
+        return true;
+    }
 
     Collection<String> getInfo();
 }
