@@ -78,7 +78,7 @@ public class AllatoriFastStringTransformer extends Transformer {
             }
 
             // Verify that the method has the gamer opcodes
-            for (AbstractInsnNode insn : AsmUtils.iterable(mn.instructions)) {
+            for (AbstractInsnNode insn : mn.instructions) {
                 if (insn instanceof MethodInsnNode) {
                     if (!((MethodInsnNode) insn).owner.equals("java/lang/String"))
                         return;
@@ -118,7 +118,7 @@ public class AllatoriFastStringTransformer extends Transformer {
 
             // Copy the decryption method
             var decryptorMethod = new MethodNode(ACC_PUBLIC | ACC_STATIC, "decrypt", "(Ljava/lang/String;)Ljava/lang/String;", null, null);
-            AsmUtils.stream(mn.instructions).forEach(decryptorMethod.instructions::add);
+            mn.instructions.forEach(decryptorMethod.instructions::add);
 
             // Setup the ClassNode
             var decryptorClass = new ClassNode();

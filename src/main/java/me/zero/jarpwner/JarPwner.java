@@ -34,9 +34,10 @@ public enum JarPwner {
     public void run(Options options) throws IOException {
         this.logger.info("Reading Input %s", options.input.toAbsolutePath());
         final var jarFileProvider = JarReader.read(options.input.toFile());
+        this.logger.info("Discovered %d Input Classes", jarFileProvider.getClasses().getAll().size());
 
         IProvider<ClassNode> dependencyProvider = null;
-        for (Path path : options.dependencies) {
+        for (var path : options.dependencies) {
             this.logger.info("Reading Library %s", path.toAbsolutePath());
             IProvider<ClassNode> provider = JarReader.read(path.toFile()).getClasses();
             dependencyProvider = dependencyProvider == null ? provider : dependencyProvider.withFallback(provider);
@@ -44,7 +45,7 @@ public enum JarPwner {
 
         final var transformers = new ArrayList<ITransformer>();
 
-        this.logger.info("Loading Plugins");
+        this.logger.info("Loading %d Plugin(s)", options.plugins.size());
         options.plugins.forEach(id -> PluginDiscovery.getPlugin(id).ifPresentOrElse(
             plugin -> transformers.addAll(getTransformers(plugin, jarFileProvider)),
             () -> this.logger.info("Unable to find plugin with ID %s, ignoring.", id)

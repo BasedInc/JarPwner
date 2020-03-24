@@ -19,54 +19,54 @@ public final class Main {
     private Main() {}
 
     public static void main(String[] args) throws IOException {
-        final var optionParser = new OptionParser();
+        final var parser = new OptionParser();
 
-        final var helpOption = optionParser.acceptsAll(Arrays.asList("h", "help"), "Displays this menu")
+        final var helpOption = parser.acceptsAll(Arrays.asList("h", "help"), "Displays this menu")
             .forHelp();
 
-        final var inputOption = optionParser.acceptsAll(Arrays.asList("in", "input"), "The input jar to be processed")
+        final var inputOption = parser.acceptsAll(Arrays.asList("i", "in", "input"), "The input jar to be processed")
             .withRequiredArg()
             .withValuesConvertedBy(new PathConverter(PathProperties.READABLE))
             .required();
 
-        final var outputOption = optionParser.acceptsAll(Arrays.asList("out", "output"), "The output location for the processed jar")
+        final var outputOption = parser.acceptsAll(Arrays.asList("o", "out", "output"), "The output location for the processed jar")
             .withRequiredArg()
             .withValuesConvertedBy(new PathConverter())
             .defaultsTo(Path.of("output.jar"));
 
-        final var classPathOption = optionParser.acceptsAll(Arrays.asList("c", "classpath"), "Dependencies for the input jar, usually only required when compute frames is enabled")
+        final var classPathOption = parser.acceptsAll(Arrays.asList("c", "classpath"), "Dependencies for the input jar, usually only required when compute frames is enabled")
             .withRequiredArg()
             .withValuesConvertedBy(new PathConverter(PathProperties.READABLE));
 
-        final var pluginOption = optionParser.acceptsAll(Arrays.asList("p", "plugin"), "Dependencies for the input jar, usually only required when compute frames is enabled")
+        final var pluginOption = parser.acceptsAll(Arrays.asList("p", "plugin"), "Dependencies for the input jar, usually only required when compute frames is enabled")
             .withRequiredArg()
             .required();
 
-        final var computeFramesOption = optionParser.acceptsAll(Arrays.asList("f", "frames"), "Enable COMPUTE_FRAMES flag when writing classes");
+        final var computeFramesOption = parser.acceptsAll(Arrays.asList("f", "frames"), "Enable COMPUTE_FRAMES flag when writing classes");
 
-        final OptionSet optionSet;
+        final OptionSet options;
         try {
-            optionSet = optionParser.parse(args);
+            options = parser.parse(args);
         } catch (OptionException e) {
             System.err.println(e.toString());
             System.exit(1);
             return;
         }
 
-        if (optionSet.has(helpOption)) {
+        if (options.has(helpOption)) {
             try {
-                optionParser.printHelpOn(System.out);
+                parser.printHelpOn(System.out);
             } catch (IOException ignored) {}
             System.exit(0);
             return;
         }
 
         JarPwner.INSTANCE.run(new Options(
-            inputOption.value(optionSet),
-            outputOption.value(optionSet),
-            classPathOption.values(optionSet),
-            pluginOption.values(optionSet),
-            optionSet.has(computeFramesOption)
+            inputOption.value(options),
+            outputOption.value(options),
+            classPathOption.values(options),
+            pluginOption.values(options),
+            options.has(computeFramesOption)
         ));
     }
 }

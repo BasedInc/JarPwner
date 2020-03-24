@@ -3,17 +3,12 @@ package me.zero.jarpwner.asm;
 import me.zero.jarpwner.util.provider.IProvider;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.MethodInsnNode;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Consumer;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 /**
  * @author Brady
@@ -77,19 +72,6 @@ public final class AsmUtils {
         }
 
         return false;
-    }
-
-    public static void forEachInsn(InsnList list, Consumer<AbstractInsnNode> consumer) {
-        iterable(list).forEach(consumer);
-    }
-
-    public static Stream<AbstractInsnNode> stream(InsnList list) {
-        return StreamSupport.stream(iterable(list).spliterator(), false);
-    }
-
-    public static Iterable<AbstractInsnNode> iterable(InsnList list) {
-        var iterator = list.iterator();
-        return () -> iterator;
     }
 
     public static String getOpcodeName(int opcode) {
