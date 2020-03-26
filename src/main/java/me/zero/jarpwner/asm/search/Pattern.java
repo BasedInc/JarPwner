@@ -5,10 +5,12 @@ import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.InsnList;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import static me.zero.jarpwner.asm.search.PatternUtils.*;
 import static org.objectweb.asm.tree.AbstractInsnNode.*;
 
 /**
@@ -17,10 +19,10 @@ import static org.objectweb.asm.tree.AbstractInsnNode.*;
  */
 public final class Pattern {
 
-    private final Integer[] opcodes;
+    private final InsnPredicate[] checks;
 
-    private Pattern(Integer... opcodes) {
-        this.opcodes = opcodes;
+    private Pattern(InsnPredicate... checks) {
+        this.checks = checks;
     }
 
     /**
@@ -36,20 +38,19 @@ public final class Pattern {
      * @return All of the pattern matches
      */
     public final List<InsnSlice> find(InsnList list, int flags) {
-        return this.find(list, insn -> {
-            switch (insn.getType()) {
-                case LABEL: {
-                    return (flags & SearchFlags.IGNORE_LABELS) != 0;
-                }
-                case FRAME: {
-                    return (flags & SearchFlags.IGNORE_FRAMES) != 0;
-                }
-                case LINE: {
-                    return (flags & SearchFlags.IGNORE_LINES) != 0;
-                }
-            }
-            return false;
-        });
+        InsnPredicate ignore = insn -> false;
+
+        if ((flags & SearchFlags.IGNORE_LABELS) != 0) {
+            ignore = ignore.or(type(LABEL));
+        }
+        if ((flags & SearchFlags.IGNORE_FRAMES) != 0) {
+            ignore = ignore.or(type(FRAME));
+        }
+        if ((flags & SearchFlags.IGNORE_LINES) != 0) {
+            ignore = ignore.or(type(LINE));
+        }
+
+        return this.find(list, ignore);
     }
 
     /**
@@ -65,16 +66,16 @@ public final class Pattern {
      * @param ignoreInsn A predicate used to determine which instructions to ignore which intersect with the pattern
      * @return All of the pattern matches
      */
-    public final List<InsnSlice> find(InsnList list, Predicate<AbstractInsnNode> ignoreInsn) {
+    public final List<InsnSlice> find(InsnList list, InsnPredicate ignoreInsn) {
         var matches = new ArrayList<InsnSlice>();
 
         outer:
-        for (int i = 0; i <= list.size() - this.opcodes.length; i++) {
+        for (var i = 0; i <= list.size() - this.checks.length; i++) {
             var last = i; // The last matched instruction
 
-            int offset = 0; // The current instruction offset from the base index
-            int matched = 0; // The number of matched instructions
-            while (matched < this.opcodes.length) {
+            var offset = 0; // The current instruction offset from the base index
+            var matched = 0; // The number of matched instructions
+            while (matched < this.checks.length) {
                 var index = i + offset++;
 
                 // If we've reached an index that exceeds the size of the instruction list, then restart the search
@@ -90,7 +91,7 @@ public final class Pattern {
                 }
 
                 // Determine if the found opcode matches the target one
-                if (this.opcodes[matched] != null && insn.getOpcode() != this.opcodes[matched]) {
+                if (!this.checks[matched].test(insn)) {
                     continue outer;
                 }
 
@@ -105,41 +106,24 @@ public final class Pattern {
     }
 
     /**
-     * @return An array of this pattern's opcodes
-     */
-    public final Integer[] getOpcodes() {
-        return this.opcodes.clone();
-    }
-
-    /**
      * @return A stream of this pattern's opcodes
      */
-    public final Stream<Integer> stream() {
-        return Stream.of(this.opcodes);
+    public final Stream<InsnPredicate> stream() {
+        return Arrays.stream(this.checks);
     }
 
-    /**
-     * @param opcodes An array of opcodes
-     * @return A pattern from the opcodes
-     */
     public static Pattern of(Integer... opcodes) {
-        return new Pattern(opcodes);
+        return new Pattern(toChecks(opcodes));
     }
 
-    /**
-     * @param opcodes A stream of opcodes
-     * @return A pattern from the opcodes
-     */
-    public static Pattern of(Stream<Integer> opcodes) {
-        return new Pattern(opcodes.toArray(Integer[]::new));
+    public static Pattern of(InsnPredicate... checks) {
+        return new Pattern(checks);
     }
 
-    /**
-     * @param opcodes A list of opcodes
-     * @return A pattern from the opcodes
-     */
-    public static Pattern of(List<Integer> opcodes) {
-        return new Pattern(opcodes.toArray(new Integer[0]));
+    public static InsnPredicate[] toChecks(Integer... opcodes) {
+        return Arrays.stream(opcodes)
+            .map(opcode -> opcode == null ? any() : literal(opcode))
+            .toArray(InsnPredicate[]::new);
     }
 
     @SuppressWarnings("PointlessBitwiseExpression")

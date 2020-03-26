@@ -1,6 +1,8 @@
 package me.zero.jarpwner.allatori.util;
 
+import me.zero.jarpwner.asm.search.InsnPredicate;
 import me.zero.jarpwner.asm.search.Pattern;
+import me.zero.jarpwner.asm.search.predicate.LiteralPredicate;
 
 import static org.objectweb.asm.Opcodes.*;
 
@@ -35,7 +37,9 @@ public interface Patterns {
     );
 
     Pattern EXPIRY_PATTERN_NO_OBF = Pattern.of(
-            EXPIRY_PATTERN.stream().filter(opcode -> opcode != INVOKESTATIC)
+            EXPIRY_PATTERN.stream()
+                .filter(check -> !(check instanceof LiteralPredicate) || ((LiteralPredicate) check).getOpcode() != INVOKESTATIC)
+                .toArray(InsnPredicate[]::new)
     );
 
     Pattern WATERMARK_PATTERN = Pattern.of(
